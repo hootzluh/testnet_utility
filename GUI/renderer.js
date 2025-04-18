@@ -610,6 +610,30 @@ function showVerifyUmaModal() {
   });
 }
 
+// Load Wallet handler
+async function loadWallets() {
+  try {
+    const result = await window.api.walletList();
+    if (result.success && Array.isArray(result.wallets)) {
+      walletList.innerHTML = ""; // Clear previous
+
+      result.wallets.forEach((w) => {
+        const item = document.createElement("div");
+        item.classList.add("list-item");
+        item.textContent = `${w.name} (${w.address})`;
+        walletList.appendChild(item);
+      });
+
+      walletSummary.textContent = `${result.wallets.length} wallet(s) loaded`;
+    } else {
+      walletList.innerHTML = "<p>Error loading wallets</p>";
+    }
+  } catch (error) {
+    console.error("Error loading wallets:", error);
+    walletList.innerHTML = "<p>Error loading wallets</p>";
+  }
+}
+
 // Settings handlers
 function saveNetworkSettingsHandler() {
   const network = networkSelect.value;
@@ -647,7 +671,7 @@ function checkDomain() {
     alert("Please enter a domain name to check.");
     return;
   }
-  
+
   // Domain check logic would go here
   alert(`Domain check for "${domain}" - Feature coming soon!`);
 }
@@ -680,12 +704,12 @@ async function loadUmas() {
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
   loadDashboard();
-  
+
   // Set network from localStorage or default to testnet
   const savedNetwork = localStorage.getItem('network') || 'testnet';
   networkSelect.value = savedNetwork;
   currentNetwork.textContent = savedNetwork.toUpperCase();
-  
+
   // Set data directory from localStorage or default
   const savedDataDir = localStorage.getItem('dataDir') || '~/.synergy';
   dataDir.value = savedDataDir;

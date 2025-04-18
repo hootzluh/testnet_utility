@@ -6,6 +6,7 @@ Calls real PQC synergy code from synergy_uma.
 """
 
 import sys
+import os
 import json
 
 from synergy_uma.pq_keys import (
@@ -19,16 +20,58 @@ from synergy_uma.sns_api import (
     lookup_name
 )
 
-# We keep the existing wallet/token placeholders
+# --------------------
+# WALLET HANDLERS
+# --------------------
 
 def handle_wallet_list():
-    return {"success": True, "wallets": [{"name": "MyWallet", "address": "0xFAKE123", "isDefault": True}]}
+    wallet_dir = os.path.expanduser("~/.synergy/wallets")
+    if not os.path.exists(wallet_dir):
+        return {"success": True, "wallets": []}
+
+    wallets = []
+    for file in os.listdir(wallet_dir):
+        if file.endswith(".json"):
+            path = os.path.join(wallet_dir, file)
+            try:
+                with open(path, "r") as f:
+                    data = json.load(f)
+                    wallets.append({
+                        "name": os.path.splitext(file)[0],
+                        "address": data.get("synergy_address", "Unknown"),
+                        "isDefault": False
+                    })
+            except:
+                continue
+
+    return {"success": True, "wallets": wallets}
+
 
 def handle_wallet_create(name, password):
-    return {"success": True, "message": f"Wallet '{name}' created."}
+    try:
+        wallet_dir = os.path.expanduser("~/.synergy/wallets")
+        os.makedirs(wallet_dir, exist_ok=True)
+
+        synergy_data = generate_synergy_seed(password)
+        out_file = os.path.join(wallet_dir, f"{name}.json")
+        save_synergy_info(out_file, synergy_data)
+
+        print(f"[✅ Wallet Created] Saved to {out_file}")  # Optional log for dev
+
+        return {
+            "success": True,
+            "message": f"Wallet '{name}' created successfully.",
+            "address": synergy_data["synergy_address"],
+            "file": out_file
+        }
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
 
 def handle_wallet_import(name, privateKey, password):
     return {"success": True, "message": f"Wallet '{name}' imported."}
+
 
 def handle_wallet_show(address):
     return {
@@ -40,6 +83,10 @@ def handle_wallet_show(address):
             "isDefault": True
         }
     }
+
+# --------------------
+# TOKEN HANDLERS
+# --------------------
 
 def handle_token_list():
     return {
@@ -55,6 +102,9 @@ def handle_token_create(name, symbol, tokenType, initialSupply, maxSupply, decim
 def handle_token_mint(tokenId, amount, toAddress, password):
     return {"success": True, "message": f"Minted {amount} of {tokenId} to {toAddress}"}
 
+# --------------------
+# NAMING HANDLERS
+# --------------------
 
 def handle_naming_list():
     return {"success": True, "domains": [{"name": "alice.syn", "status": "registered", "expirationDate": 1699999999}]}
@@ -77,8 +127,10 @@ def handle_naming_register(domainName, registrationPeriod, password):
     result = register_name(domainName, synergy_addr)
     return result
 
-# ---------------------
-# NEW UMA calls
+# --------------------
+# UMA HANDLERS
+# --------------------
+
 def handle_uma_generate(password):
     synergy_data = generate_synergy_seed(password)
     out_file = "synergy_seed.json"
@@ -101,17 +153,21 @@ def handle_uma_derive(chainName, password):
     result = derive_subkey_for_chain(synergy_data, chainName, password)
     return result
 
+# --------------------
+# SNS LOOKUP
+# --------------------
+
 def handle_sns_lookup(domainName):
     res = lookup_name(domainName)
     return res
 
+# --------------------
+# MAIN ENTRY
+# --------------------
+
 def main():
     """
     python_bridge.py command [args...]
-    For example:
-        python_bridge.py wallet_list
-        python_bridge.py uma_generate <password>
-        python_bridge.py uma_derive <chainName> <password>
     """
     args = sys.argv
     if len(args) < 2:
