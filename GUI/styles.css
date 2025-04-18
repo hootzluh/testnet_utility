@@ -131,17 +131,19 @@ nav ul li {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-left: 0.5rem;
+  margin-right: 5px;
 }
 
 .status-indicator.online {
-  background-color: var(--success-color);
-  box-shadow: 0 0 10px var(--success-color);
+  background-color: #00c853;
 }
 
 .status-indicator.offline {
-  background-color: var(--error-color);
-  box-shadow: 0 0 10px var(--error-color);
+  background-color: #d32f2f;
+}
+
+.status-indicator.connecting {
+  background-color: #ffca28;
 }
 
 /* Main Content Styles */
@@ -457,25 +459,25 @@ input:focus, select:focus, textarea:focus {
     flex-direction: column;
     padding: 1rem;
   }
-  
+
   nav ul {
     margin-top: 1rem;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   nav ul li {
     margin: 0.25rem;
   }
-  
+
   main {
     padding: 1rem;
   }
-  
+
   .action-bar {
     flex-direction: column;
   }
-  
+
   .search-container {
     max-width: 100%;
     margin-bottom: 1rem;

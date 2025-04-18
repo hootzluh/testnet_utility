@@ -18,11 +18,17 @@
         </div>
       </div>
       <div class="network-status">
-        <p>Network: <span id="current-network">TESTNET</span></p>
-        <p>Status: <span class="status-indicator online"></span> <span id="network-status-text">ONLINE</span></p>
-      </div>
-    </header>
-
+  <p>
+    Network:
+    <span id="current-network" class="network-label">Detecting...</span>
+  </p><br>
+  <p>
+    Status:
+    <span class="status-indicator connecting"></span>
+    <span id="network-status-text">CONNECTING...</span>
+  </p>
+</div>
+</header>
     <main>
       <!-- Dashboard Section -->
       <section id="dashboard" class="section active">
@@ -67,28 +73,31 @@
         </div>
       </section>
 
-      <!-- Wallet Section -->
-      <section id="wallet" class="section">
-        <h2>Wallet Management</h2>
-        <div class="action-bar">
-          <button id="create-wallet-action" class="primary-btn">Create Wallet</button>
-          <button id="import-wallet-action">Import Wallet</button>
-          <button id="refresh-wallets-btn">Refresh</button>
-        </div>
-        <div class="wallet-list-container">
-          <h3>Your Wallets</h3>
-          <div id="wallet-list" class="list-container">
-            Loading wallets...
-          </div>
-        </div>
-        <div id="wallet-details" class="details-container">
-          <h3>Wallet Details</h3>
-          <div class="details-content">
-            <p>Select a wallet to view details</p>
-          </div>
-        </div>
-      </section>
+     <!-- Wallet Section -->
+<section id="wallet" class="section">
+  <h2>Wallet Management</h2>
 
+  <div class="action-bar">
+    <button id="create-wallet-action" class="primary-btn">Create Wallet</button>
+    <button id="import-wallet-action">Import Wallet</button>
+    <button id="refresh-wallets-btn">Refresh</button>
+  </div>
+
+  <div class="wallet-list-container">
+    <h3>Your Wallets</h3>
+    <div id="wallet-list" class="list-container">
+      Loading wallets...
+    </div>
+    <p id="wallet-summary" class="wallet-summary"></p>
+  </div>
+
+  <div id="wallet-details" class="details-container">
+    <h3>Wallet Details</h3>
+    <div class="details-content">
+      <p>Select a wallet to view details</p>
+    </div>
+  </div>
+</section>
       <!-- Tokens Section -->
       <section id="tokens" class="section">
         <h2>Token Management</h2>

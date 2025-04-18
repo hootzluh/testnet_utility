@@ -1,6 +1,9 @@
 // Renderer process for Synergy Network Utility
 
 // DOM Elements
+const networkStatusText = document.getElementById("network-status-text");
+const statusIndicator = document.querySelector(".status-indicator");
+const currentNetwork = document.getElementById("current-network");
 const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll(".section");
 const modalContainer = document.getElementById("modal-container");
@@ -15,7 +18,6 @@ const logoLight = document.getElementById("logo-light");
 const walletSummary = document.getElementById("wallet-summary");
 const tokenSummary = document.getElementById("token-summary");
 const domainSummary = document.getElementById("domain-summary");
-const currentNetwork = document.getElementById("current-network");
 
 // Dashboard buttons
 const createWalletBtn = document.getElementById("create-wallet-btn");
@@ -664,6 +666,66 @@ function signOutHandler() {
   alert('Signed out successfully!');
 }
 
+async function checkNetworkStatus() {
+  const current = localStorage.getItem("network") || "testnet";
+
+  // Dynamic RPC endpoints per network
+  const rpcUrls = {
+    testnet: "http://localhost:8545",
+    // mainnet: "https://rpc.synergynetwork.org", // ← Enable when mainnet launches
+    // devnet: "http://localhost:8546", // Optional if needed later
+  };
+
+  const rpcUrl = rpcUrls[current];
+
+  if (!rpcUrl) {
+    console.warn(`No RPC URL defined for network: ${current}`);
+    setNetworkStatus("offline");
+    return;
+  }
+
+  try {
+    const response = await fetch(rpcUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "synergy_status", // ✅ Replaced method name here
+        params: [],
+        id: 1,
+      }),
+    });
+
+    const data = await response.json();
+    console.log("✅ Network RPC response:", data);
+
+    if (data && data.result === "ok") {
+      setNetworkStatus("online");
+    } else {
+      setNetworkStatus("offline");
+    }
+  } catch (err) {
+    console.error("❌ Network status check failed:", err);
+    setNetworkStatus("offline");
+  }
+}
+
+function setNetworkStatus(status) {
+  if (status === "online") {
+    networkStatusText.textContent = "ONLINE";
+    statusIndicator.classList.remove("offline", "connecting");
+    statusIndicator.classList.add("online");
+  } else if (status === "connecting") {
+    networkStatusText.textContent = "CONNECTING...";
+    statusIndicator.classList.remove("online", "offline");
+    statusIndicator.classList.add("connecting");
+  } else {
+    networkStatusText.textContent = "OFFLINE";
+    statusIndicator.classList.remove("online", "connecting");
+    statusIndicator.classList.add("offline");
+  }
+}
+
 // Load data functions
 function checkDomain() {
   const domain = domainSearch.value;
@@ -713,4 +775,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set data directory from localStorage or default
   const savedDataDir = localStorage.getItem('dataDir') || '~/.synergy';
   dataDir.value = savedDataDir;
+
+  // ✅ Start network status checking
+  setNetworkStatus("connecting");
+  checkNetworkStatus();
+  setInterval(checkNetworkStatus, 5000); // Poll every 5s
 });
