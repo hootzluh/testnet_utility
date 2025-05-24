@@ -7,17 +7,20 @@ store it, and load it. Also includes basic local encryption for private keys.
 """
 
 import os
+import sys
 import json
 import base64
 import hashlib
 from typing import Optional
 
-# For actual post-quantum signing we can use dilithium2 from pqcrypto.sign
-# pip install pqcrypto
+# Ensure local pqcrypto module path is found first
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+# Import Dilithium2 — must come *after* sys.path modification
 try:
     from pqcrypto.sign import dilithium2
 except ImportError:
-    raise ImportError("Please install pqcrypto (pip install pqcrypto) to use Dilithium2 post-quantum signatures.")
+    raise ImportError("Please install pqcrypto (pip install pqcrypto) or ensure the local pqcrypto module is placed correctly.")
 
 # For encryption:
 from Crypto.Cipher import AES
@@ -36,11 +39,8 @@ def generate_synergy_seed(password: str) -> dict:
     If a password is provided, we encrypt the private key with AES.
     """
     # Generate a new Dilithium2 keypair
-    keypair = dilithium2.generate_keypair()
+    pub_bytes, sec_bytes = dilithium2.generate_keypair()
     # keypair: (public_key, secret_key)
-
-    pub_bytes = keypair.public_key
-    sec_bytes = keypair.secret_key
 
     synergy_address = compute_synergy_meta_address(pub_bytes)
 

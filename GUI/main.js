@@ -6,9 +6,11 @@ const Store = require("electron-store");
 const store = new Store({
   name: "synergy-config",
   defaults: {
-    windowSize: { width: 1200, height: 800 },
-    theme: "dark",
-  },
+    windowSize: {
+      width: 1200, height: 900,
+      theme: "dark",
+    },
+  }
 });
 
 let mainWindow;
@@ -16,12 +18,11 @@ const pythonPath = process.platform === "win32" ? "python" : "python3";
 const scriptPath = path.join(__dirname, "python_bridge.py");
 
 function createWindow() {
-  const { width, height } = store.get("windowSize");
+
   mainWindow = new BrowserWindow({
-    width,
-    height,
-    minWidth: 800,
-    minHeight: 600,
+    width: 1200,
+    height: 900,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,

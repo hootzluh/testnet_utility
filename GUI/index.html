@@ -1,242 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synergy Network Utility</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>
+    Synergy Network Utility
+  </title>
+  <link href="styles.css" rel="stylesheet" />
 </head>
-<body>
-  <div id="app">
+
+<body style="margin: 3px;">
+  <div id="app" style=" margin: 3px">
     <header>
-      <div class="logo">
-        <img src="assets/sn-logo-dark.png" alt="Synergy Network Logo" id="logo" class="dark-logo">
-        <img src="assets/sn-logo-light.png" alt="Synergy Network Logo" id="logo-light" class="light-logo hidden">
-        <div>
-          <h1>Synergy Network</h1>
-          <div class="utility-title">Utility Tool</div>
+      <div class="navbar glass">
+        <img alt="Utility Logo" class="utility-logo" src="assets/utility_logo.png"
+          style="height: 32px; margin: 0 auto; display: block;" />
+        <div class="network-toggle" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);">
+          <label class="toggle-label">
+            <span>
+              Testnet
+            </span>
+            <input checked="" disabled="" type="checkbox" />
+          </label>
         </div>
       </div>
-      <div class="network-status">
-  <p>
-    Network:
-    <span id="current-network" class="network-label">Detecting...</span>
-  </p><br>
-  <p>
-    Status:
-    <span class="status-indicator connecting"></span>
-    <span id="network-status-text">CONNECTING...</span>
-  </p>
-</div>
-</header>
+    </header>
     <main>
-      <!-- Dashboard Section -->
-      <section id="dashboard" class="section active">
+      <section class="section active" id="dashboard">
         <div class="function-section">
-          <h2 class="function-title">Wallet Functions</h2>
           <div class="function-buttons">
-            <button class="function-button" id="create-wallet-btn">Create Wallet</button>
-            <button class="function-button" id="import-wallet-btn">Import Wallet</button>
-            <button class="function-button" id="export-wallet-btn">Export Wallet</button>
-            <button class="function-button" id="view-wallet-btn">View Wallet</button>
-          </div>
-        </div>
-
-        <div class="function-section">
-          <h2 class="function-title">Token Functions</h2>
-          <div class="function-buttons">
-            <button class="function-button" id="create-token-btn">Create Token</button>
-            <button class="function-button" id="mint-token-btn">Mint Token</button>
-            <button class="function-button" id="transfer-token-btn">Transfer Token</button>
-            <button class="function-button" id="burn-token-btn">Burn Token</button>
-          </div>
-        </div>
-
-        <div class="function-section">
-          <h2 class="function-title">Synergy Naming System</h2>
-          <div class="function-buttons">
-            <button class="function-button" id="register-name-btn">Register Name</button>
-            <button class="function-button" id="lookup-name-btn">Lookup Name</button>
-            <button class="function-button" id="update-name-btn">Update Name</button>
-            <button class="function-button" id="transfer-name-btn">Transfer Name</button>
-          </div>
-        </div>
-
-        <div class="function-section">
-          <h2 class="function-title">Universal Meta Address Functions</h2>
-          <div class="function-buttons">
-            <button class="function-button" id="generate-uma-btn">Generate UMA</button>
-            <button class="function-button" id="derive-address-btn">Derive Address</button>
-            <button class="function-button" id="verify-uma-btn">Verify UMA</button>
-            <button class="function-button" id="manage-uma-btn">Manage UMA</button>
+            <button class="function-button" id="nav-wallet-btn">
+              Wallet Functions
+            </button>
+            <button class="function-button" id="nav-tokens-btn">
+              Token Functions
+            </button>
+            <button class="function-button" id="nav-naming-btn">
+              SNS Functions
+            </button>
+            <button class="function-button" id="nav-uma-btn">
+              UMA Functions
+            </button>
+            <button class="function-button" id="nav-settings-btn">
+              Settings
+            </button>
           </div>
         </div>
       </section>
 
-     <!-- Wallet Section -->
-<section id="wallet" class="section">
-  <h2>Wallet Management</h2>
-
-  <div class="action-bar">
-    <button id="create-wallet-action" class="primary-btn">Create Wallet</button>
-    <button id="import-wallet-action">Import Wallet</button>
-    <button id="refresh-wallets-btn">Refresh</button>
-  </div>
-
-  <div class="wallet-list-container">
-    <h3>Your Wallets</h3>
-    <div id="wallet-list" class="list-container">
-      Loading wallets...
-    </div>
-    <p id="wallet-summary" class="wallet-summary"></p>
-  </div>
-
-  <div id="wallet-details" class="details-container">
-    <h3>Wallet Details</h3>
-    <div class="details-content">
-      <p>Select a wallet to view details</p>
-    </div>
-  </div>
-</section>
-      <!-- Tokens Section -->
-      <section id="tokens" class="section">
-        <h2>Token Management</h2>
+      <section class="section" id="wallet">
+        <button class="home-btn">Home</button>
+        <h2>
+          Wallet Management
+        </h2>
         <div class="action-bar">
-          <button id="create-token-action" class="primary-btn">Create Token</button>
-          <button id="refresh-tokens-btn">Refresh</button>
+          <button class="primary-btn" id="create-wallet-action">
+            Create Wallet
+          </button>
+          <button id="import-wallet-action">
+            Import Wallet
+          </button>
+          <button id="refresh-wallets-btn">
+            Refresh
+          </button>
+        </div>
+        <div class="wallet-list-container">
+          <h3>
+            Your Wallets
+          </h3>
+          <div class="list-container" id="wallet-list">
+            Loading wallets...
+          </div>
+          <p class="wallet-summary" id="wallet-summary">
+          </p>
+        </div>
+        <div class="details-container" id="wallet-details">
+          <h3>
+            Wallet Details
+          </h3>
+          <div class="details-content">
+            <p>
+              Select a wallet to view details
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="tokens">
+        <button class="home-btn">Home</button>
+        <h2>
+          Token Management
+        </h2>
+        <div class="action-bar">
+          <button class="primary-btn" id="create-token-action">
+            Create Token
+          </button>
+          <button id="refresh-tokens-btn">
+            Refresh
+          </button>
         </div>
         <div class="token-list-container">
-          <h3>Your Tokens</h3>
-          <div id="token-list" class="list-container">
+          <h3>
+            Your Tokens
+          </h3>
+          <div class="list-container" id="token-list">
             Loading tokens...
           </div>
         </div>
-        <div id="token-details" class="details-container">
-          <h3>Token Details</h3>
+        <div class="details-container" id="token-details">
+          <h3>
+            Token Details
+          </h3>
           <div class="details-content">
-            <p>Select a token to view details</p>
+            <p>
+              Select a token to view details
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- Naming System Section -->
-      <section id="naming" class="section">
-        <h2>Synergy Naming System</h2>
+      <section class="section" id="naming">
+        <button class="home-btn">Home</button>
+        <h2>
+          Synergy Naming System
+        </h2>
         <div class="action-bar">
           <div class="search-container">
-            <input type="text" id="domain-search" placeholder="Check domain availability...">
-            <button id="check-domain-btn">Check</button>
+            <input id="domain-search" placeholder="Check domain availability..." type="text" />
+            <button id="check-domain-btn">
+              Check
+            </button>
           </div>
-          <button id="refresh-domains-btn">Refresh</button>
+          <button id="refresh-domains-btn">
+            Refresh
+          </button>
         </div>
         <div class="domain-list-container">
-          <h3>Your Domains</h3>
-          <div id="domain-list" class="list-container">
+          <h3>
+            Your Domains
+          </h3>
+          <div class="list-container" id="domain-list">
             Loading domains...
           </div>
         </div>
-        <div id="domain-details" class="details-container">
-          <h3>Domain Details</h3>
+        <div class="details-container" id="domain-details">
+          <h3>
+            Domain Details
+          </h3>
           <div class="details-content">
-            <p>Select a domain to view details</p>
+            <p>
+              Select a domain to view details
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- UMA Section -->
-      <section id="uma" class="section">
-        <h2>Universal Meta Address</h2>
+      <section class="section" id="uma">
+        <button class="home-btn">Home</button>
+        <h2>
+          Universal Meta Address
+        </h2>
         <div class="action-bar">
-          <button id="generate-uma-action" class="primary-btn">Generate UMA</button>
-          <button id="derive-address-action">Derive Address</button>
-          <button id="refresh-uma-btn">Refresh</button>
+          <button class="primary-btn" id="generate-uma-action">
+            Generate UMA
+          </button>
+          <button id="derive-address-action">
+            Derive Address
+          </button>
+          <button id="refresh-uma-btn">
+            Refresh
+          </button>
         </div>
         <div class="uma-list-container">
-          <h3>Your UMAs</h3>
-          <div id="uma-list" class="list-container">
+          <h3>
+            Your UMAs
+          </h3>
+          <div class="list-container" id="uma-list">
             Loading UMAs...
           </div>
         </div>
-        <div id="uma-details" class="details-container">
-          <h3>UMA Details</h3>
+        <div class="details-container" id="uma-details">
+          <h3>
+            UMA Details
+          </h3>
           <div class="details-content">
-            <p>Select a UMA to view details</p>
+            <p>
+              Select a UMA to view details
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- Settings Section -->
-      <section id="settings" class="section">
-        <h2>Settings</h2>
+      <section class="section" id="settings">
+        <button class="home-btn">Home</button>
+        <h2>
+          Settings
+        </h2>
         <div class="settings-grid">
           <div class="card">
-            <h3>Network Settings</h3>
+            <h3>
+              Network Settings
+            </h3>
             <div class="form-group">
-              <label for="network-select">Active Network</label>
+              <label for="network-select">
+                Active Network
+              </label>
               <select id="network-select">
-                <option value="mainnet">Mainnet</option>
-                <option value="testnet" selected>Testnet</option>
-                <option value="local">Local</option>
+                <option value="mainnet">
+                  Mainnet
+                </option>
+                <option selected="" value="testnet">
+                  Testnet
+                </option>
+                <option value="local">
+                  Local
+                </option>
               </select>
             </div>
             <div class="form-group">
-              <button id="save-network-settings" class="primary-btn">Save Network Settings</button>
+              <button class="primary-btn" id="save-network-settings">
+                Save Network Settings
+              </button>
             </div>
           </div>
           <div class="card">
-            <h3>Appearance</h3>
+            <h3>
+              Appearance
+            </h3>
             <div class="form-group">
-              <label for="theme-select">Theme</label>
+              <label for="theme-select">
+                Theme
+              </label>
               <select id="theme-select">
-                <option value="light">Light</option>
-                <option value="dark" selected>Dark</option>
-                <option value="system">System</option>
+                <option value="light">
+                  Light
+                </option>
+                <option selected="" value="dark">
+                  Dark
+                </option>
+                <option value="system">
+                  System
+                </option>
               </select>
             </div>
             <div class="form-group">
-              <button id="save-appearance-settings" class="primary-btn">Save Appearance Settings</button>
+              <button class="primary-btn" id="save-appearance-settings">
+                Save Appearance Settings
+              </button>
             </div>
           </div>
           <div class="card">
-            <h3>Advanced</h3>
+            <h3>
+              Advanced
+            </h3>
             <div class="form-group">
-              <label for="data-dir">Data Directory</label>
+              <label for="data-dir">
+                Data Directory
+              </label>
               <div class="input-with-button">
-                <input type="text" id="data-dir" readonly value="~/.synergy">
-                <button id="browse-data-dir">Browse</button>
+                <input id="data-dir" readonly="" type="text" value="~/.synergy" />
+                <button id="browse-data-dir">
+                  Browse
+                </button>
               </div>
             </div>
             <div class="form-group">
-              <button id="save-advanced-settings" class="primary-btn">Save Advanced Settings</button>
+              <button class="primary-btn" id="save-advanced-settings">
+                Save Advanced Settings
+              </button>
             </div>
           </div>
           <div class="card">
-            <h3>Account</h3>
+            <h3>
+              Account
+            </h3>
             <div class="form-group">
-              <button id="disconnect-wallet" class="primary-btn">Disconnect Wallet</button>
+              <button class="primary-btn" id="disconnect-wallet">
+                Disconnect Wallet
+              </button>
             </div>
             <div class="form-group">
-              <button id="sign-out" class="primary-btn">Sign Out</button>
+              <button class="primary-btn" id="sign-out">
+                Sign Out
+              </button>
             </div>
           </div>
         </div>
       </section>
     </main>
-
-    <!-- Modal Templates -->
-    <div id="modal-container" class="modal-container hidden">
+    <div class="modal-container hidden" id="modal-container">
       <div class="modal">
         <div class="modal-header">
-          <h3 id="modal-title">Modal Title</h3>
-          <button id="modal-close" class="close-btn">&times;</button>
+          <h3 id="modal-title">
+            Modal Title
+          </h3>
+          <button class="close-btn" id="modal-close">
+            ×
+          </button>
         </div>
-        <div id="modal-content" class="modal-content">
-          <!-- Modal content will be dynamically inserted here -->
+        <div class="modal-content" id="modal-content">
         </div>
       </div>
     </div>
   </div>
-
-  <script src="renderer.js"></script>
+  <script src="renderer.js">
+  </script>
+  <div class="floating-network-status glass" onclick="refreshNetworkStatus(this)">
+    <div class="status-content">
+      <div class="status-dot">
+      </div>
+      <div>
+        <div>
+          Network: TESTNET
+        </div>
+        <div>
+          Status: Online
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

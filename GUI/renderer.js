@@ -19,26 +19,6 @@ const walletSummary = document.getElementById("wallet-summary");
 const tokenSummary = document.getElementById("token-summary");
 const domainSummary = document.getElementById("domain-summary");
 
-// Dashboard buttons
-const createWalletBtn = document.getElementById("create-wallet-btn");
-const importWalletBtn = document.getElementById("import-wallet-btn");
-const exportWalletBtn = document.getElementById("export-wallet-btn");
-const viewWalletBtn = document.getElementById("view-wallet-btn");
-
-const createTokenBtn = document.getElementById("create-token-btn");
-const mintTokenBtn = document.getElementById("mint-token-btn");
-const transferTokenBtn = document.getElementById("transfer-token-btn");
-const burnTokenBtn = document.getElementById("burn-token-btn");
-
-const registerNameBtn = document.getElementById("register-name-btn");
-const lookupNameBtn = document.getElementById("lookup-name-btn");
-const updateNameBtn = document.getElementById("update-name-btn");
-const transferNameBtn = document.getElementById("transfer-name-btn");
-
-const generateUmaBtn = document.getElementById("generate-uma-btn");
-const deriveAddressBtn = document.getElementById("derive-address-btn");
-const verifyUmaBtn = document.getElementById("verify-uma-btn");
-const manageUmaBtn = document.getElementById("manage-uma-btn");
 
 // Section action buttons
 const createWalletAction = document.getElementById("create-wallet-action");
@@ -78,22 +58,25 @@ const signOut = document.getElementById("sign-out");
 function setTheme(theme) {
   if (theme === 'light') {
     document.body.classList.add('light-theme');
-    logo.classList.add('hidden');
-    logoLight.classList.remove('hidden');
+    logo?.classList.add('hidden');
+    logoLight?.classList.remove('hidden');
   } else {
     document.body.classList.remove('light-theme');
-    logo.classList.remove('hidden');
-    logoLight.classList.add('hidden');
+    logo?.classList.remove('hidden');
+    logoLight?.classList.add('hidden');
   }
   localStorage.setItem('theme', theme);
 }
 
 // Initialize theme
 const savedTheme = localStorage.getItem('theme') || 'dark';
-themeSelect.value = savedTheme;
-setTheme(savedTheme);
+if (themeSelect) {
+  themeSelect.value = savedTheme;
+  setTheme(savedTheme);
+}
 
-themeSelect.addEventListener('change', (e) => {
+
+themeSelect?.addEventListener('change', (e) => {
   setTheme(e.target.value);
 });
 
@@ -124,120 +107,12 @@ navLinks.forEach((link) => {
   });
 });
 
-// Dashboard button handlers
-createWalletBtn.addEventListener("click", () => {
-  navigateTo("wallet");
-  showCreateWalletModal();
-});
-
-importWalletBtn.addEventListener("click", () => {
-  navigateTo("wallet");
-  showImportWalletModal();
-});
-
-exportWalletBtn.addEventListener("click", () => {
-  navigateTo("wallet");
-  // Select first wallet and show export modal
-  const firstWallet = document.querySelector(".list-item");
-  if (firstWallet) {
-    firstWallet.click();
-    document.getElementById("export-btn")?.click();
-  }
-});
-
-viewWalletBtn.addEventListener("click", () => {
-  navigateTo("wallet");
-});
-
-createTokenBtn.addEventListener("click", () => {
-  navigateTo("tokens");
-  showCreateTokenModal();
-});
-
-mintTokenBtn.addEventListener("click", () => {
-  navigateTo("tokens");
-  // Select first token and show mint modal
-  const firstToken = document.querySelector("#token-list .list-item");
-  if (firstToken) {
-    firstToken.click();
-    // Mint button would be in the token details
-  }
-});
-
-transferTokenBtn.addEventListener("click", () => {
-  navigateTo("tokens");
-  // Select first token and show transfer modal
-  const firstToken = document.querySelector("#token-list .list-item");
-  if (firstToken) {
-    firstToken.click();
-    // Transfer button would be in the token details
-  }
-});
-
-burnTokenBtn.addEventListener("click", () => {
-  navigateTo("tokens");
-  // Select first token and show burn modal
-  const firstToken = document.querySelector("#token-list .list-item");
-  if (firstToken) {
-    firstToken.click();
-    // Burn button would be in the token details
-  }
-});
-
-registerNameBtn.addEventListener("click", () => {
-  navigateTo("naming");
-  showRegisterNameModal();
-});
-
-lookupNameBtn.addEventListener("click", () => {
-  navigateTo("naming");
-  // Focus on the domain search input
-  domainSearch.focus();
-});
-
-updateNameBtn.addEventListener("click", () => {
-  navigateTo("naming");
-  // Select first domain and show update modal
-  const firstDomain = document.querySelector("#domain-list .list-item");
-  if (firstDomain) {
-    firstDomain.click();
-    // Update button would be in the domain details
-  }
-});
-
-transferNameBtn.addEventListener("click", () => {
-  navigateTo("naming");
-  // Select first domain and show transfer modal
-  const firstDomain = document.querySelector("#domain-list .list-item");
-  if (firstDomain) {
-    firstDomain.click();
-    // Transfer button would be in the domain details
-  }
-});
-
-generateUmaBtn.addEventListener("click", () => {
-  navigateTo("uma");
-  showGenerateUmaModal();
-});
-
-deriveAddressBtn.addEventListener("click", () => {
-  navigateTo("uma");
-  showDeriveAddressModal();
-});
-
-verifyUmaBtn.addEventListener("click", () => {
-  navigateTo("uma");
-  showVerifyUmaModal();
-});
-
-manageUmaBtn.addEventListener("click", () => {
-  navigateTo("uma");
-  // Select first UMA and show management options
-  const firstUma = document.querySelector("#uma-list .list-item");
-  if (firstUma) {
-    firstUma.click();
-  }
-});
+// Dashboard navigation button handlers
+document.getElementById("nav-wallet-btn")?.addEventListener("click", () => navigateTo("wallet"));
+document.getElementById("nav-tokens-btn")?.addEventListener("click", () => navigateTo("tokens"));
+document.getElementById("nav-naming-btn")?.addEventListener("click", () => navigateTo("naming"));
+document.getElementById("nav-uma-btn")?.addEventListener("click", () => navigateTo("uma"));
+document.getElementById("nav-settings-btn")?.addEventListener("click", () => navigateTo("settings"));
 
 // Section action button handlers
 createWalletAction?.addEventListener("click", showCreateWalletModal);
@@ -260,6 +135,14 @@ saveAppearanceSettings?.addEventListener("click", saveAppearanceSettingsHandler)
 saveAdvancedSettings?.addEventListener("click", saveAdvancedSettingsHandler);
 disconnectWallet?.addEventListener("click", disconnectWalletHandler);
 signOut?.addEventListener("click", signOutHandler);
+
+// Home button handlers
+document.querySelectorAll(".home-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    navigateTo("dashboard");
+  });
+});
+
 
 // Modal functions
 function showModal(title, content) {
@@ -314,7 +197,7 @@ function showCreateWalletModal() {
     </form>
   `);
 
-  document.getElementById("create-wallet-form").addEventListener("submit", async (e) => {
+  document.getElementById("create-wallet-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("wallet-name").value;
     const password = document.getElementById("wallet-password").value;
@@ -362,7 +245,7 @@ function showImportWalletModal() {
     </form>
   `);
 
-  document.getElementById("import-wallet-form").addEventListener("submit", async (e) => {
+  document.getElementById("import-wallet-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("import-wallet-name").value;
     const privateKey = document.getElementById("import-private-key").value;
@@ -420,7 +303,7 @@ function showCreateTokenModal() {
     </form>
   `);
 
-  document.getElementById("create-token-form").addEventListener("submit", async (e) => {
+  document.getElementById("create-token-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("token-name").value;
     const symbol = document.getElementById("token-symbol").value;
@@ -474,7 +357,7 @@ function showRegisterNameModal() {
     </form>
   `);
 
-  document.getElementById("register-name-form").addEventListener("submit", async (e) => {
+  document.getElementById("register-name-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const domainName = document.getElementById("domain-name").value + ".syn";
     const registrationPeriod = document.getElementById("registration-period").value;
@@ -509,7 +392,7 @@ function showGenerateUmaModal() {
     </form>
   `);
 
-  document.getElementById("generate-uma-form").addEventListener("submit", async (e) => {
+  document.getElementById("generate-uma-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const password = document.getElementById("uma-password").value || "";
 
@@ -558,7 +441,7 @@ function showDeriveAddressModal() {
     </form>
   `);
 
-  document.getElementById("derive-address-form").addEventListener("submit", async (e) => {
+  document.getElementById("derive-address-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const chainName = document.getElementById("chain-name").value;
     const password = document.getElementById("derive-password").value;
@@ -604,7 +487,7 @@ function showVerifyUmaModal() {
     </form>
   `);
 
-  document.getElementById("verify-uma-form").addEventListener("submit", async (e) => {
+  document.getElementById("verify-uma-form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     // Verification logic would go here
     alert("Verification feature coming soon!");
@@ -617,43 +500,169 @@ async function loadWallets() {
   try {
     const result = await window.api.walletList();
     if (result.success && Array.isArray(result.wallets)) {
-      walletList.innerHTML = ""; // Clear previous
+      if (walletList) {
+        walletList.innerHTML = ""; // Clear previous
+        result.wallets.forEach((w) => {
+          const item = document.createElement("div");
+          item.classList.add("list-item");
+          item.textContent = `${w.name} (${w.address})`;
+          walletList.appendChild(item);
+        });
+      }
 
-      result.wallets.forEach((w) => {
-        const item = document.createElement("div");
-        item.classList.add("list-item");
-        item.textContent = `${w.name} (${w.address})`;
-        walletList.appendChild(item);
-      });
-
-      walletSummary.textContent = `${result.wallets.length} wallet(s) loaded`;
+      if (walletSummary) {
+        walletSummary.textContent = `${result.wallets.length} wallet(s) loaded`;
+      }
     } else {
-      walletList.innerHTML = "<p>Error loading wallets</p>";
+      if (walletList) {
+        walletList.innerHTML = "<p>Error loading wallets</p>";
+      }
     }
   } catch (error) {
     console.error("Error loading wallets:", error);
-    walletList.innerHTML = "<p>Error loading wallets</p>";
+    if (walletList) {
+      walletList.innerHTML = "<p>Error loading wallets</p>";
+    }
   }
 }
 
+
+// Load Tokens handler
+async function loadTokens() {
+  try {
+    const result = await window.api.tokenList();
+    if (result.success && Array.isArray(result.tokens)) {
+      if (tokenList) {
+        tokenList.innerHTML = ""; // Clear previous
+        result.tokens.forEach((t) => {
+          const item = document.createElement("div");
+          item.classList.add("list-item");
+          item.textContent = `${t.name} (${t.symbol})`;
+          tokenList.appendChild(item);
+        });
+      }
+    } else {
+      if (tokenList) {
+        tokenList.innerHTML = "<p>Error loading tokens</p>";
+      }
+    }
+  } catch (error) {
+    console.error("Error loading tokens:", error);
+    if (tokenList) {
+      tokenList.innerHTML = "<p>Error loading tokens</p>";
+    }
+  }
+}
+
+// Load Domains handler
+async function loadDomains() {
+  try {
+    const result = await window.api.namingList();
+    if (result.success && Array.isArray(result.domains)) {
+      if (domainList) {
+        domainList.innerHTML = ""; // Clear previous
+        result.domains.forEach((d) => {
+          const item = document.createElement("div");
+          item.classList.add("list-item");
+          item.textContent = `${d.name}`;
+          domainList.appendChild(item);
+        });
+      }
+    } else {
+      if (domainList) {
+        domainList.innerHTML = "<p>Error loading domains</p>";
+      }
+    }
+  } catch (error) {
+    console.error("Error loading domains:", error);
+    if (domainList) {
+      domainList.innerHTML = "<p>Error loading domains</p>";
+    }
+  }
+}
+
+// Check Domain handler
+async function checkDomain() {
+  const domain = domainSearch.value;
+  if (!domain) {
+    alert("Please enter a domain name to check.");
+    return;
+  }
+
+  try {
+    const result = await window.api.namingCheck(domain + ".syn");
+    if (result.success) {
+      alert(`Domain "${domain}.syn" is ${result.available ? 'available' : 'not available'}.`);
+    } else {
+      alert(`Error checking domain: ${result.error}`);
+    }
+  } catch (error) {
+    console.error("Error checking domain:", error);
+    alert("Error checking domain. Please try again.");
+  }
+}
+
+
+// Load UMAs handler
+async function loadUmas() {
+  try {
+    const result = await window.api.umaList();
+    if (result.success && Array.isArray(result.umas)) {
+      if (umaList) {
+        umaList.innerHTML = ""; // Clear previous
+        result.umas.forEach((u) => {
+          const item = document.createElement("div");
+          item.classList.add("list-item");
+          item.textContent = `${u.synergy_address}`;
+          umaList.appendChild(item);
+        });
+      }
+    } else {
+      if (umaList) {
+        umaList.innerHTML = "<p>Error loading UMAs</p>";
+      }
+    }
+  } catch (error) {
+    console.error("Error loading UMAs:", error);
+    if (umaList) {
+      umaList.innerHTML = "<p>Error loading UMAs</p>";
+    }
+  }
+}
+
+
 // Settings handlers
 function saveNetworkSettingsHandler() {
-  const network = networkSelect.value;
-  localStorage.setItem('network', network);
-  currentNetwork.textContent = network.toUpperCase();
-  alert(`Network settings saved! Active network: ${network}`);
+  const network = networkSelect?.value;
+  if (network) {
+    localStorage.setItem('network', network);
+    if (currentNetwork) {
+      currentNetwork.textContent = network.toUpperCase();
+    }
+    alert(`Network settings saved! Active network: ${network}`);
+  } else {
+    alert("Network select element not found.");
+  }
 }
 
 function saveAppearanceSettingsHandler() {
-  const theme = themeSelect.value;
-  setTheme(theme);
-  alert('Appearance settings saved!');
+  const theme = themeSelect?.value;
+  if (theme) {
+    setTheme(theme);
+    alert('Appearance settings saved!');
+  } else {
+    alert("Theme select element not found.");
+  }
 }
 
 function saveAdvancedSettingsHandler() {
-  const directory = dataDir.value;
-  localStorage.setItem('dataDir', directory);
-  alert('Advanced settings saved!');
+  const directory = dataDir?.value;
+  if (directory) {
+    localStorage.setItem('dataDir', directory);
+    alert('Advanced settings saved!');
+  } else {
+    alert("Data directory element not found.");
+  }
 }
 
 function disconnectWalletHandler() {
@@ -712,56 +721,32 @@ async function checkNetworkStatus() {
 
 function setNetworkStatus(status) {
   if (status === "online") {
-    networkStatusText.textContent = "ONLINE";
-    statusIndicator.classList.remove("offline", "connecting");
-    statusIndicator.classList.add("online");
+    if (networkStatusText && statusIndicator) {
+      networkStatusText.textContent = "ONLINE";
+      statusIndicator.classList.remove("offline", "connecting");
+      statusIndicator.classList.add("online");
+    }
   } else if (status === "connecting") {
-    networkStatusText.textContent = "CONNECTING...";
-    statusIndicator.classList.remove("online", "offline");
-    statusIndicator.classList.add("connecting");
+    if (networkStatusText && statusIndicator) {
+      networkStatusText.textContent = "CONNECTING...";
+      statusIndicator.classList.remove("online", "offline");
+      statusIndicator.classList.add("connecting");
+    }
   } else {
-    networkStatusText.textContent = "OFFLINE";
-    statusIndicator.classList.remove("online", "connecting");
-    statusIndicator.classList.add("offline");
+    if (networkStatusText && statusIndicator) {
+      networkStatusText.textContent = "OFFLINE";
+      statusIndicator.classList.remove("online", "connecting");
+      statusIndicator.classList.add("offline");
+    }
   }
 }
 
-// Load data functions
-function checkDomain() {
-  const domain = domainSearch.value;
-  if (!domain) {
-    alert("Please enter a domain name to check.");
-    return;
-  }
-
-  // Domain check logic would go here
-  alert(`Domain check for "${domain}" - Feature coming soon!`);
-}
-
+// Load data functions (Simplified for now)
 async function loadDashboard() {
-  // Dashboard loading logic would go here
   console.log("Loading dashboard...");
+  // Implement dashboard data loading if needed
 }
 
-async function loadWallets() {
-  // Wallet loading logic would go here
-  console.log("Loading wallets...");
-}
-
-async function loadTokens() {
-  // Token loading logic would go here
-  console.log("Loading tokens...");
-}
-
-async function loadDomains() {
-  // Domain loading logic would go here
-  console.log("Loading domains...");
-}
-
-async function loadUmas() {
-  // UMA loading logic would go here
-  console.log("Loading UMAs...");
-}
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
@@ -769,15 +754,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set network from localStorage or default to testnet
   const savedNetwork = localStorage.getItem('network') || 'testnet';
-  networkSelect.value = savedNetwork;
-  currentNetwork.textContent = savedNetwork.toUpperCase();
+  if (networkSelect) {
+    networkSelect.value = savedNetwork;
+  }
+  if (currentNetwork) {
+    currentNetwork.textContent = savedNetwork.toUpperCase();
+  }
+
 
   // Set data directory from localStorage or default
   const savedDataDir = localStorage.getItem('dataDir') || '~/.synergy';
-  dataDir.value = savedDataDir;
+  if (dataDir) {
+    dataDir.value = savedDataDir;
+  }
 
-  // ✅ Start network status checking
+
+  // Start network status checking
   setNetworkStatus("connecting");
   checkNetworkStatus();
   setInterval(checkNetworkStatus, 5000); // Poll every 5s
 });
+
+// Floating Network Status Animation - Single Flip
+function refreshNetworkStatus(element) {
+  if (element.classList.contains("flipping")) return; // prevent multi-trigger
+
+  const originalContent = element.innerHTML;
+
+  element.classList.add("flipping");
+  element.innerHTML = `
+    <div class="status-content">
+      <div style="font-size: 14px;">Refreshing Network Connection...</div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    element.innerHTML = `
+      <div class="status-content">
+        <div class="status-dot"></div>
+        <div>
+          <div>Network: TESTNET</div>
+          <div>Status: Online</div>
+        </div>
+      </div>
+    `; // Note: This hardcoded content should ideally be dynamic based on actual status
+    element.classList.remove("flipping");
+  }, 2000);
+}

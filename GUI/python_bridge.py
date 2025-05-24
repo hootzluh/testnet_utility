@@ -56,7 +56,7 @@ def handle_wallet_create(name, password):
         out_file = os.path.join(wallet_dir, f"{name}.json")
         save_synergy_info(out_file, synergy_data)
 
-        print(f"[✅ Wallet Created] Saved to {out_file}")  # Optional log for dev
+        print(f"[✅ Wallet Created] Saved to {out_file}", file=sys.stderr)  # Optional log for dev
 
         return {
             "success": True,
@@ -166,6 +166,9 @@ def handle_sns_lookup(domainName):
 # --------------------
 
 def main():
+    with open("bridge_out.log", "a") as f:
+      f.write(f"[BRIDGE CALLED] Args: {sys.argv}\n")
+
     """
     python_bridge.py command [args...]
     """
